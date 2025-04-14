@@ -58,21 +58,54 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  int _currentIndex = 0;
+
+  // final List<Widget> _pages = [
+  //   const ConcertListScreen(),
+  //   const FavoritesScreen(),
+  //   const ProfileScreen(),
+  // ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text('EDK Admin')),
         body: Center(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Hello :D"),
-            ElevatedButton(
-              // ignore: avoid_print
-              onPressed: () => _afficherPopup(context),
-              child: const Text("Une question ?"),
-            ),
-          ],
-        )));
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Hello :D"),
+                ElevatedButton(
+                  // ignore: avoid_print
+                  onPressed: () => _afficherPopup(context),
+                  child: const Text("Une question ?"),
+                ),
+              ],
+            )
+        ),
+
+        // NavBar
+        bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: const Color.fromARGB(255, 38, 246, 253),
+            selectedItemColor: Colors.green,
+            unselectedItemColor: Colors.white,
+            // currentIndex = la page entre 0 et 1, utilisant le tableau
+            // au dessus, _pages
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              // setState indique qu'il faut re-build l'application, puis
+              // on indique dans _currentIndex quelle page on est (0, 1, 2)
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            // les items sont les diiférentes catégories pour la navbar
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Accueil'),
+              BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favoris'),
+              BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
+            ],
+          ),
+      );
   }
 }
