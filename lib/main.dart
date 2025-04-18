@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'screens/profil_screen.dart';
+import 'screens/devoir_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,72 +42,40 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _afficherPopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Titre de la pop-up"),
-          content: const Text("Ceci est une boîte de dialogue simple."),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(), // Fermer la pop-up
-              child: const Text("Fermer"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   int _currentIndex = 0;
 
-  // final List<Widget> _pages = [
-  //   const ConcertListScreen(),
-  //   const FavoritesScreen(),
-  //   const ProfileScreen(),
-  // ];
+  final List<Widget> _pages = [
+    const DevoirScreen(),
+    const ProfilScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('EDK Admin')),
-        body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Hello :D"),
-                ElevatedButton(
-                  // ignore: avoid_print
-                  onPressed: () => _afficherPopup(context),
-                  child: const Text("Une question ?"),
-                ),
-              ],
-            )
-        ),
+      body: _pages[_currentIndex],
+      appBar: AppBar(title: const Text('EDK Admin')),
 
-        // NavBar
-        bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: const Color.fromARGB(255, 38, 246, 253),
-            selectedItemColor: Colors.green,
-            unselectedItemColor: Colors.white,
-            // currentIndex = la page entre 0 et 1, utilisant le tableau
-            // au dessus, _pages
-            currentIndex: _currentIndex,
-            onTap: (index) {
-              // setState indique qu'il faut re-build l'application, puis
-              // on indique dans _currentIndex quelle page on est (0, 1, 2)
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            // les items sont les diiférentes catégories pour la navbar
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Accueil'),
-              BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favoris'),
-              BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
-            ],
-          ),
-      );
+      // NavBar
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color.fromARGB(255, 38, 246, 253),
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.white,
+        // currentIndex = la page entre 0 et 1, utilisant le tableau
+        // au dessus, _pages
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          // setState indique qu'il faut re-build l'application, puis
+          // on indique dans _currentIndex quelle page on est (0, 1, 2)
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        // les items sont les diiférentes catégories pour la navbar
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Devoirs'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
+        ],
+      ),
+    );
   }
 }
