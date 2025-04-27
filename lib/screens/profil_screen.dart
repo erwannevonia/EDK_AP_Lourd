@@ -1,7 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import '../services/api_service.dart';
+import '../models/globals.dart';
 
 class ProfilScreen extends StatefulWidget {
   const ProfilScreen({super.key});
@@ -22,9 +25,22 @@ class _ProfilScreenState extends State<ProfilScreen> {
     return digest.toString();
   }
 
-  void _verifConnexion(nom, mdp) {
-    ApiService.getUser(nom, mdp);
+  Future<void> _verifConnexion(String nom, String mdp) async {
+    print('Nom = $nom');
+    print('mdp = $mdp');
+    
+    List<AppData> userDataList = await ApiService.getUser(nom, mdp);
+  
+    if (userDataList.isNotEmpty) {
+      AppData userData = userDataList.first; // Prendre le premier utilisateur
+      AppData.instance.updateUserData(userData.idCompte, userData.nomCompte); // Mettre à jour le singleton
+  
+      print('Utilisateur connecté: ${AppData.instance.nomCompte}, ID: ${AppData.instance.idCompte}');
+    } else {
+      print("Erreur : aucune donnée utilisateur reçue");
+    }
   }
+
   
   
 

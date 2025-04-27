@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import '../models/globals.dart';
 
 class DevoirScreen extends StatelessWidget {
   const DevoirScreen({super.key});
 
+
+
+
   void _afficherPopup(BuildContext context) {
+    int idCompte = AppData.instance.idCompte;
+    String nomCompte = AppData.instance.nomCompte;
+    
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Titre de la pop-up"),
-          content: const Text("Ceci est une boîte de dialogue simple."),
+          content: Text('ID du compte : $idCompte, Nom du compte : $nomCompte'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(), // Fermer la pop-up

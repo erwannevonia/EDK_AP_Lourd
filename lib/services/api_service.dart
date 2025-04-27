@@ -1,12 +1,13 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../models/user.dart';
+// import '../models/user.dart';
+import '../models/globals.dart';
 
 class ApiService {
   static const String baseUrl =
       'http://172.16.198.254:3000'; //Modifier l'adresse IP du serveur
 
-  static Future<List<User>> getUser(
+  static Future<List<AppData>> getUser(
     String nom, String mdp
   ) async {
     final response = await http.get(Uri.parse(
@@ -14,7 +15,7 @@ class ApiService {
       ));
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = json.decode(response.body);
-      return jsonResponse.map((user) => User.fromJson(user)).toList();
+      return jsonResponse.map((user) => AppData.fromJson(user)).toList();
     } else {
       throw Exception('Impossible de récupérer l\'utilisateur.');
     }
