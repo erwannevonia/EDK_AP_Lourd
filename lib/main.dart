@@ -1,6 +1,11 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
-import 'screens/profil_screen.dart';
-import 'screens/devoir_screen.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
+import '../services/api_service.dart';
+import '../models/globals.dart';
+import 'test copy.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,40 +47,78 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
+  final TextEditingController nomController = TextEditingController();
+  final TextEditingController mdpController = TextEditingController();
 
-  final List<Widget> _pages = [
-    const DevoirScreen(),
-    const ProfilScreen(),
-  ];
+  String _convertToSHA256(input) {
+    var bytes = utf8.encode(input);
+    var digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
+  Future<void> _verifConnexion(String nom, String mdp, context) async {
+    print('Nom = $nom');
+    print('mdp = $mdp');
+    
+    List<AppData> userDataList = await ApiService.getUser(nom, mdp);
+  
+    if (userDataList.isNotEmpty) {
+      AppData userData = userDataList.first; // Prendre le premier utilisateur
+      AppData.instance.updateUserData(userData.idCompte, userData.nomCompte); // Mettre à jour le singleton
+  
+      print('Utilisateur connecté: ${AppData.instance.nomCompte}, ID: ${AppData.instance.idCompte}');
+
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ConnectedPage(title: 'test',)));
+    } else {
+      print("Erreur : aucune donnée utilisateur reçue");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
-      appBar: AppBar(title: const Text('EDK Admin')),
-
-      // NavBar
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 38, 246, 253),
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.white,
-        // currentIndex = la page entre 0 et 1, utilisant le tableau
-        // au dessus, _pages
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          // setState indique qu'il faut re-build l'application, puis
-          // on indique dans _currentIndex quelle page on est (0, 1, 2)
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        // les items sont les diiférentes catégories pour la navbar
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Devoirs'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
-        ],
-      ),
-    );
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        appBar: AppBar(
+          title:
+              const Text('Mon Profil', style: TextStyle(color: Colors.white)),
+          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+          elevation: 0,
+        ),
+        body: Center(
+          child: Column(children: [
+            TextField(
+              controller: nomController,
+              style: const TextStyle(color: Colors.black),
+              decoration: const InputDecoration(
+                labelText: 'Nom d\'utilisateur',
+                labelStyle: TextStyle(color: Colors.black),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+              ),
+            ),
+            TextField(
+              controller: mdpController,
+              style: const TextStyle(color: Colors.black),
+              decoration: const InputDecoration(
+                labelText: 'Mot de passe',
+                labelStyle: TextStyle(color: Colors.black),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                String input = mdpController.text;
+                String mdp = _convertToSHA256(input);
+                String nom = nomController.text;
+                _verifConnexion(nom, mdp, context);
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+              child: const Text("Se connecter"),
+              )
+          ]),
+        ));
   }
 }
