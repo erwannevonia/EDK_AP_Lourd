@@ -5,7 +5,7 @@ import '../models/globals.dart';
 
 class ApiService {
   static const String baseUrl =
-      'http://172.16.198.254:3000'; //Modifier l'adresse IP du serveur
+      'http://localhost:3000'; //Modifier l'adresse IP du serveur
 
   static Future<List<AppData>> getUser(
     String nom, String mdp

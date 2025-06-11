@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import '../services/api_service.dart';
 import '../models/globals.dart';
-import 'test copy.dart';
+import 'navbar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
   
       print('Utilisateur connecté: ${AppData.instance.nomCompte}, ID: ${AppData.instance.idCompte}');
 
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ConnectedPage(title: 'test',)));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ConnectedPage(title: 'Navbar',)));
     } else {
       print("Erreur : aucune donnée utilisateur reçue");
     }

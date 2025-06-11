@@ -6,8 +6,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 const db = mysql.createConnection({
- host: '172.16.198.254',
- user: 'edk-selector',
+ host: '127.0.0.1',
+ user: 'root',
  password: 't',
  database: 'EDK'
 });
@@ -32,16 +32,19 @@ app.get('/user', (req, res) => {
 
     let query = `
         SELECT Id_Compte, Nom_Compte
-        FROM COMPTE
+        FROM COMPTE, ADMINISTRATEUR 
         WHERE 1=1
     `;
     let params = [];
     
-    query += ` AND Nom_Compte LIKE ? `;
+    query += ` AND Nom_Compte = ? `;
     params.push(`%${nom}%`);
 
     query += ` AND Mdp_Compte = ? `;
     params.push(`${mdp}`);
+
+    query += ` AND ADMINISTRATEUR.Id_Compte = (SELECT Id_Compte FROM COMPTE WHERE Nom_Compte = ?) `;
+    params.push(`${nom}`);
     
     db.query(query, params, (err, result) => {
         if (err) throw err;
