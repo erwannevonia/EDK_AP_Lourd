@@ -105,6 +105,32 @@ app.delete('/utilisateurs/:id', (req, res) => {
   });
 });
 
+
+// Route pour supprimer un professeur
+app.delete('/utilisateurs/:id', (req, res) => {
+  const id = req.params.id;
+  let query = ` DELETE FROM COMPTE_MATIERE WHERE Id_Compte = ?; `;
+  let params = [];
+  params.push(`${id}`);
+
+  query += ` DELETE FROM POSSEDER WHERE Id_Compte = ?; `;
+  params.push(`${id}`);
+
+  query += ` DELETE FROM PROFESSEUR WHERE Id_Compte = ?; `;
+  params.push(`${id}`);
+
+  query += ` DELETE FROM COMPTE WHERE Id_Compte = ?; `;
+  params.push(`${id}`);
+  
+  db.query(query, params, (err, result) => {
+    if (err) return res.status(500).json({ error: 'Erreur serveur' });
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Aucun compte trouvé avec cet ID' });
+    }
+    res.status(200).json({ message: 'Compte supprimé' });
+  });
+});
+
 app.listen(3000, () => {
 console.log('Serveur en écoute sur le port 3000');
 });

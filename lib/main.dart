@@ -1,14 +1,21 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-import '../services/api_service.dart';
-import '../models/globals.dart';
+import '/services/api_service.dart';
+import '/models/globals.dart';
 import 'navbar.dart';
+import 'models/theme_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,12 +24,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
       title: 'EDK Admin',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      themeMode: themeProvider.themeMode, 
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
       home: const MyHomePage(title: 'EDK Admin'),
     );
   }
@@ -77,35 +85,35 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           title:
-              const Text('Mon Profil', style: TextStyle(color: Colors.white)),
-          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+              Text('Mon Profil', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0,
         ),
         body: Center(
           child: Column(children: [
             TextField(
               controller: nomController,
-              style: const TextStyle(color: Colors.black),
-              decoration: const InputDecoration(
+              style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+              decoration: InputDecoration(
                 labelText: 'Nom d\'utilisateur',
-                labelStyle: TextStyle(color: Colors.black),
+                labelStyle: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
                 enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
+                  borderSide: BorderSide(color: Theme.of(context).colorScheme.onSurface),
                 ),
               ),
             ),
             TextField(
               controller: mdpController,
               obscureText: true,
-              style: const TextStyle(color: Colors.black),
-              decoration: const InputDecoration(
+              style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+              decoration: InputDecoration(
                 labelText: 'Mot de passe',
-                labelStyle: TextStyle(color: Colors.black),
+                labelStyle: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
                 enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
+                  borderSide: BorderSide(color: Theme.of(context).colorScheme.onSurface),
                 ),
               ),
             ),
@@ -116,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 String nom = nomController.text;
                 _verifConnexion(nom, mdp, context);
               },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+              style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).scaffoldBackgroundColor,),
               child: const Text("Se connecter"),
               )
           ]),

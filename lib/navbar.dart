@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/profil_screen.dart';
+import 'screens/settings_screen.dart';
 import 'screens/eleves_screen.dart';
 
 void main() {
@@ -46,7 +46,7 @@ class _ConnectedPageState extends State<ConnectedPage> {
 
   final List<Widget> _pages = [
     const ElevesScreen(),
-    const ProfilScreen(),
+    const SettingsPage(),
   ];
 
   @override
