@@ -11,7 +11,6 @@ class SettingsPage extends StatelessWidget {
     final isDark = themeProvider.themeMode == ThemeMode.dark;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Paramètres')),
       body: ListTile(
         title: const Text('Thème sombre'),
         trailing: Switch(

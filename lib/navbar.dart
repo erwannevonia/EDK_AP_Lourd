@@ -57,8 +57,8 @@ class _ConnectedPageState extends State<ConnectedPage> {
 
       // NavBar
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 38, 246, 253),
-        selectedItemColor: Colors.green,
+        backgroundColor: const Color.fromARGB(255, 35, 140, 238),
+        selectedItemColor: const Color.fromARGB(255, 12, 226, 173),
         unselectedItemColor: Colors.white,
         // currentIndex = la page entre 0 et 1, utilisant le tableau
         // au dessus, _pages
@@ -72,8 +72,8 @@ class _ConnectedPageState extends State<ConnectedPage> {
         },
         // les items sont les diiférentes catégories pour la navbar
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Devoirs'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Eleves'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Paramètres'),
         ],
       ),
     );
