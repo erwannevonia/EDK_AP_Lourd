@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/profil_screen.dart';
-import 'screens/devoir_screen.dart';
+import 'screens/eleves_screen.dart';
 
 void main() {
   runApp(const TestApp());
@@ -45,7 +45,7 @@ class _ConnectedPageState extends State<ConnectedPage> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    const DevoirScreen(),
+    const ElevesScreen(),
     const ProfilScreen(),
   ];
 

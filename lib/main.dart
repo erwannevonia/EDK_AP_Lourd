@@ -99,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextField(
               controller: mdpController,
+              obscureText: true,
               style: const TextStyle(color: Colors.black),
               decoration: const InputDecoration(
                 labelText: 'Mot de passe',

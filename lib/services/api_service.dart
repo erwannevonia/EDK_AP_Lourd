@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-// import '../models/user.dart';
+import '../models/info_user.dart';
 import '../models/globals.dart';
 
 class ApiService {
@@ -20,6 +20,62 @@ class ApiService {
       throw Exception('Impossible de récupérer l\'utilisateur.');
     }
   }
+
+  static Future<List<InfoUser>> fetchEleves(
+  ) async {
+    final response = await http.get(Uri.parse(
+      '$baseUrl/eleves'
+      ));
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+      return jsonResponse.map((json) => InfoUser.fromJson(json)).toList();
+    } else {
+      throw Exception('Échec du chargement des élèves');
+    }
+  }
+
+  static Future<String> deleteEleve(
+    int id
+  ) async {
+    final response = await http.delete(Uri.parse('$baseUrl/utilisateurs/$id'));
+
+    if (response.statusCode == 200) {
+      try {
+        final data = json.decode(response.body);
+        return data['message'] ?? 'Compte supprimé';
+      } catch (e) {
+        return 'Compte supprimé (pas de message JSON)';
+      }
+    } else {
+      try {
+        final data = json.decode(response.body);
+        throw Exception(data['error'] ?? 'Erreur inconnue');
+      } catch (e) {
+        throw Exception('Erreur inconnue (réponse non JSON)');
+      }
+    }
+  }
+
+  static Future<String> updateMotDePasse(
+    int id, String nouveauMdp
+  ) async {
+  final response = await http.put(
+    Uri.parse('$baseUrl/utilisateurs/$id/mdp'),
+    headers: {'Content-Type': 'application/json'},
+    body: json.encode({'mdp': nouveauMdp}),
+  );
+
+  if (response.statusCode == 200) {
+    return json.decode(response.body)['message'] ?? 'Mot de passe mis à jour';
+  } else {
+    try {
+      final error = json.decode(response.body)['error'];
+      throw Exception(error ?? 'Erreur inconnue');
+    } catch (e) {
+      throw Exception('Erreur inconnue (réponse invalide)');
+    }
+  }
+}
 
   // Future<List<Concert>> searchConcerts(
   //     String scene, String date, String artiste) async {
