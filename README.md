@@ -25,14 +25,15 @@ Elle permet de gérer et d'afficher les informations liées aux utilisateurs, pr
 ```bash
 /lib
 ├── models/
-│   └── info_user.dart         # Modèle représentant un professeur (équivalent à "Concert")
+│   └── info_user.dart              # Modèle représentant un élève
 ├── screens/
-│   └── eleves_screen.dart              # Page principale avec les cards
-│   └── settings_screen.dart
+│   └── eleves_screen.dart          # Page principale avec les cards
+│   └── settings_screen.dart        # Page secondaire avec les paramètres
 ├── services/
-│   └── api_service.dart       # Gestion des appels à l’API
-main.dart                      # Point d’entrée de l’application
-navbar.dart
+│   └── api_service.dart            # Gestion des appels à l’API
+├── eleve_details_page.dart         # Page de détails des élèves une fois cliquée
+├── main.dart                       # Point d’entrée de l’application
+├── navbar.dart                     # Page gérant la navbar et les deux vues dans le dossier screens
 ```
 
 ## ⚙️ Configuration
